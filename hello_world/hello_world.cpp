@@ -1,3 +1,5 @@
+#define CL_HPP_TARGET_OPENCL_VERSION 120
+#define CL_HPP_MINIMUM_OPENCL_VERSION 120
 #include <CL/cl.hpp>
 #include <fstream>
 #include <iostream>
@@ -57,7 +59,8 @@ int main(){
      * Compile the program which will run on the device.
      * */
 
-    cl::Program::Sources sources(1, std::make_pair(src.c_str(), src.length() + 1));
+    cl::Program::Sources sources;
+    sources.push_back(src);
     cl::Context context(device);
     cl::Program program(context, sources);
 

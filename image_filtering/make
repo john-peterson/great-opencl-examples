@@ -1,0 +1,1 @@
+c++ *cpp -l OpenCL -l X11 -l bthread -l jpeg
