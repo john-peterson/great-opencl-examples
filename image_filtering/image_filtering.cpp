@@ -8,6 +8,7 @@ extern "C" {
 #include <bthread.h>
 }
 #endif
+#define cimg_use_jpeg 1
 #include "CImg.h"
 using namespace cimg_library;
 
@@ -177,6 +178,7 @@ int main(){
      * */
     
     displayImg(parFilteredImg, imgWidth, imgHeight);
+
     return 0;
 }
 
@@ -321,8 +323,8 @@ void parFilter(unsigned int imgWidth,
 
     cl::CommandQueue queue(context, device);
     queue.enqueueNDRangeKernel(grayKernel, cl::NullRange, cl::NDRange(imgWidth, imgHeight));
-    queue.enqueueNDRangeKernel(lpKernel, cl::NullRange, cl::NDRange(imgWidth, imgHeight), cl::NDRange(16, 16));
-    queue.enqueueNDRangeKernel(hpKernel, cl::NullRange, cl::NDRange(imgWidth, imgHeight), cl::NDRange(16, 16));
+    queue.enqueueNDRangeKernel(lpKernel, cl::NullRange, cl::NDRange(imgWidth, imgHeight), cl::NDRange(5, 5));
+    queue.enqueueNDRangeKernel(hpKernel, cl::NullRange, cl::NDRange(imgWidth, imgHeight), cl::NDRange(5, 5));
     queue.enqueueReadBuffer(hpOutputBuf, CL_TRUE, 0, imgWidth * imgHeight * sizeof(unsigned char), outputImg);
 }
 
@@ -485,7 +487,8 @@ void displayImg(unsigned char *img, int imgWidth, int imgHeight){
      * Display image.
      * */
 
-    cimg.display();
+    cimg.save_jpeg("out");
+    // cimg.display();
 }
 
 /**
